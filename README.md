@@ -8,6 +8,17 @@ This project explores using an "outside option" in RLHF to learn an absolute rew
 The project concludes that the most valuable use for an "outside option" is not as a complex modeling feature, but as a practical **data curation heuristic** to improve the quality of the training dataset.
 
 ---
+## Project Pipeline
+
+1.  **`SFT.ipynb`:** Fine-tunes the base `gemma-3-270m` model using LoRA to teach it a specific response style. The output is the foundational SFT model.
+
+2.  **`Data Generation.ipynb`:** Uses the SFT model to generate two responses for each prompt. A reward model scores them, and a preference function simulates a human choice (chosen vs. rejected) to create the `dpo_data.csv` dataset.
+
+3.  **`DPO.ipynb`:** Aligns the SFT model to the preference data. It loads the SFT model as a trainable policy and a frozen reference, then trains a new LoRA adapter using the standard DPO loss function.
+
+4.  **`New DPO.ipynb`:** Documents a failed experiment to create a new DPO variant. This approach attempted to explicitly model the "neither" option by jointly training the policy with a separate `logz_model` that estimated the partition function.
+
+---
 ## The Hypothesis
 
 ### 1. The Hidden Assumption in Standard RLHF
