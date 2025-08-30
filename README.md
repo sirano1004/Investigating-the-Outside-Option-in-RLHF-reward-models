@@ -160,7 +160,7 @@ Four models were trained and evaluated:
 
 1.  **SFT (Baseline):** The supervised fine-tuned model with no subsequent preference alignment.
 2.  **SFT + DPO with Full Data:** The SFT model further trained with DPO on the preference data. It was trained on the pairwise preferences between the two generated responses, ignoring any preference involving the outside option.
-3.  **SFT + DPO with Data Removal:** The SFT model trained with DPO on a **filtered dataset**. All samples where the "outside option" was the most preferred choice were removed. This simulates the flawed methodology discussed previously.
+3.  **SFT + DPO with Data Removal:** The SFT model trained with DPO on a **filtered dataset**. All samples where the "outside option" was the most preferred choice were removed. This simulates the data cleaning process to remove bad samples.
 4.  **SFT + DPO with Outside Option:** The SFT model trained with a custom DPO-like objective that attempts to incorporate the three-way preference, including the outside option. This model attempts to learn the absolute reward scale and implicitly estimates the partition function $Z(x)$.
 
 ---
@@ -182,7 +182,7 @@ The results provide clear empirical evidence for the theoretical issues discusse
 
 1.  **Standard DPO is Effective:** The **SFT + DPO with Full Data** model (Mean Reward: 0.1527) shows a significant improvement over the **SFT baseline** (Mean Reward: -0.2047). This confirms that standard DPO is effective at aligning the model's outputs with the preferences of the reward model.
 
-2.  **Data Removal is Misleadingly Successful:** The **SFT + DPO with Data Removal** model achieved the highest score (Mean Reward: 0.2392). This result perfectly demonstrates the **survivorship bias** flaw. By removing the most challenging samples where both generated responses were poor, the model was trained on an easier, pre-filtered dataset. It learned to perform exceptionally well on "easy" cases but was never trained on the difficult ones, leading to an inflated and misleading evaluation score.
+2.  **Data Removal is Misleadingly Successful:** The **SFT + DPO with Data Removal** model achieved the highest score (Mean Reward: 0.2392). This result perfectly demonstrates the **survivorship bias** flaw. By removing the most challenging samples where both generated responses were poor, the model was trained on an easier, pre-filtered dataset. It may suggest that including an "outside option" could provide an easy way to clean data for DPO.
 
 3.  **The Custom Model Fails as Predicted:** The **SFT + DPO with Outside Option** model performed the worst of all the aligned models, showing only a marginal improvement over the SFT baseline. This result strongly supports the theoretical issues raised earlier. The model, which attempts to learn the intractable partition function $Z(x)$, likely suffers from an **unstable training process and the identifiability problem**, failing to converge to a good policy.
 
