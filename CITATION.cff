@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Rho"
+  given-names: "Hyung Gyu"
+title: "Investigating the Outside Option in RLHF reward models"
+version: 1.0.0
+date-released: 2025-08-29
+url: "https://github.com/sirano1004/Investigating-the-Outside-Option-in-RLHF-reward-models"
